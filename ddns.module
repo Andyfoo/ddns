@@ -57,8 +57,8 @@ function ddns_help($path, $arg) {
 function ddns_permission() {
   return array(
     'ddns admin' => array(
-      'title' => t('Administer ddns settings'),
-      'description' => t('Perform configuration for ddns setup.'),
+      'title' => t('Administer DDNS settings'),
+      'description' => t('Perform configuration for DDNS setup.'),
     ),
   );
 }
@@ -73,8 +73,8 @@ function ddns_menu() {
   $items = array();
 
   $items['admin/config/development/ddns'] = array(
-    'title' => 'Disco',
-    'description' => 'Configuration for ddns',
+    'title' => 'DDNS',
+    'description' => 'Configuration for DDNS',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ddns_settings_form'),
     'access arguments' => array('ddns admin'),

@@ -1,5 +1,5 @@
-name = ddns
-description = Update Dynamic DNS providers
+name = DDNS
+description = Update Dynamic DNS providers from within Drupal.
 core = 7.x
 
 configure = admin/config/development/ddns
