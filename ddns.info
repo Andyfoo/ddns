@@ -1,0 +1,5 @@
+name = ddns
+description = Update Dynamic DNS providers
+core = 7.x
+
+configure = admin/config/development/ddns

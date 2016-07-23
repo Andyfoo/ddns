@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * Implements hook_enable().
+ *
+ * Runs after the module is enabled, letting the user know where to go
+ */
+function ddns_enable() {
+  drupal_set_message(t('ddns enabled! Configure <a href="@admin">the settings</a>.', array(
+    '@admin' => url('admin/config/development/ddns'),
+  )));
+}
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Runs during uninstall, cleaning up old variables
+ */
+function ddns_uninstall() {
+
+}

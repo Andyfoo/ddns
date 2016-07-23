@@ -1,0 +1,86 @@
+<?php
+
+/**
+ * @file
+ *
+ * Generate random colors for elements on a page
+ *
+ */
+
+/**
+ * Implements hook_help().
+ *
+ * Displays help and module information.
+ *
+ * @param path 
+ *   Which path of the site we're using to display help
+ * @param arg 
+ *   Array that holds the current path as returned from arg() function
+ */
+function ddns_help($path, $arg) {
+  // Switch based on where we're at in Drupal
+  switch ($path) {
+    case 'admin/help#ddns':
+      // https://www.drupal.org/node/161085
+      $filepath = dirname(__FILE__) . '/README.md';
+      if (file_exists($filepath)) {
+        $readme = file_get_contents($filepath);
+      }
+      else {
+        $filepath = dirname(__FILE__) . '/README.txt';
+        if (file_exists($filepath)) {
+          $readme = file_get_contents($filepath);
+        }
+      }
+      if (!isset($readme)) {
+        return NULL;
+      }
+      if (module_exists('markdown')) {
+        $filters = module_invoke('markdown', 'filter_info');
+        $info = $filters['filter_markdown'];
+
+        if (function_exists($info['process callback'])) {
+          $output = $info['process callback']($readme, NULL);
+        }
+        else {
+          $output = '<pre>' . $readme . '</pre>';
+        }
+      }
+      else {
+        $output = '<pre>' . $readme . '</pre>';
+      }
+
+      return $output;
+  }
+}
+
+function ddns_permission() {
+  return array(
+    'ddns admin' => array(
+      'title' => t('Administer ddns settings'),
+      'description' => t('Perform configuration for ddns setup.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ *
+ * Generates menu items and permissions for administration.
+ */
+function ddns_menu() {
+  // Create the menu
+  $items = array();
+
+  $items['admin/config/development/ddns'] = array(
+    'title' => 'Disco',
+    'description' => 'Configuration for ddns',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ddns_settings_form'),
+    'access arguments' => array('ddns admin'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'ddns.admin.inc',
+  );
+
+  return $items;
+}
