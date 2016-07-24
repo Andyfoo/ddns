@@ -23,7 +23,7 @@ function ddns_settings_form($form, &$form_state) {
     $form['ddns_services'][$provider . '_enabled'] = array(
       '#type' => 'checkbox',
       '#title' => $provider,
-      '#default_value' => variable_get($provider . '_enabled',0),
+      '#default_value' => variable_get('ddns_' . $provider . '_enabled',0),
     );
     $form['ddns_services'][$provider . '_settings'] = array(
       '#type' => 'fieldset',
@@ -39,19 +39,19 @@ function ddns_settings_form($form, &$form_state) {
       '#type' => 'textfield',
       '#title' => t('Username'),
       '#description' => t('The username for the service.'),
-      '#default_value' => variable_get($provider . '_username',''),
+      '#default_value' => variable_get('ddns_' . $provider . '_username',''),
     );
     $form['ddns_services'][$provider . '_settings'][$provider . '_password'] = array(
       '#type' => 'textfield',
       '#title' => t('Password'),
       '#description' => t('The password for the service.'),
-      '#default_value' => variable_get($provider . '_password',''),
+      '#default_value' => variable_get('ddns_' . $provider . '_password',''),
     );
     $form['ddns_services'][$provider . '_settings'][$provider . '_hostname'] = array(
       '#type' => 'textfield',
       '#title' => t('Hostname'),
       '#description' => t('The hostname(s) for the service.'),
-      '#default_value' => variable_get($provider . '_hostname',''),
+      '#default_value' => variable_get('ddns_' . $provider . '_hostname',''),
     );
   };
 
