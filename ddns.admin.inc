@@ -18,38 +18,38 @@ function ddns_settings_form($form, &$form_state) {
   );
 
   foreach(ddns_services() as $provider => $url) {
-    $form['ddns_services'][$provider . '_enabled'] = array(
+    $form['ddns_services']['ddns_' . $provider . '_enabled'] = array(
       '#type' => 'checkbox',
       '#title' => $provider,
-      '#default_value' => variable_get('ddns_' . $provider . '_enabled',0),
+      '#default_value' => variable_get('ddns_' . $provider . '_enabled', 0),
     );
-    $form['ddns_services'][$provider . '_settings'] = array(
+    $form['ddns_services']['ddns_' . $provider . '_settings'] = array(
       '#type' => 'fieldset',
       '#states' => array(
         'visible' => array(
-          ':input[name="' . $provider . '_enabled"]' => array(
+          ':input[name="ddns_' . $provider . '_enabled"]' => array(
             'checked' => TRUE,
           )
         )
       ),
     );
-    $form['ddns_services'][$provider . '_settings'][$provider . '_username'] = array(
+    $form['ddns_services']['ddns_' . $provider . '_settings']['ddns_' . $provider . '_username'] = array(
       '#type' => 'textfield',
       '#title' => t('Username'),
       '#description' => t('The username for the service.'),
-      '#default_value' => variable_get('ddns_' . $provider . '_username',''),
+      '#default_value' => variable_get('ddns_' . $provider . '_username', ''),
     );
-    $form['ddns_services'][$provider . '_settings'][$provider . '_password'] = array(
+    $form['ddns_services']['ddns_' . $provider . '_settings']['ddns_' . $provider . '_password'] = array(
       '#type' => 'textfield',
       '#title' => t('Password'),
       '#description' => t('The password for the service.'),
-      '#default_value' => variable_get('ddns_' . $provider . '_password',''),
+      '#default_value' => variable_get('ddns_' . $provider . '_password', ''),
     );
-    $form['ddns_services'][$provider . '_settings'][$provider . '_hostname'] = array(
+    $form['ddns_services']['ddns_' . $provider . '_settings']['ddns_' . $provider . '_hostname'] = array(
       '#type' => 'textfield',
       '#title' => t('Hostname'),
       '#description' => t('The hostname(s) for the service.'),
-      '#default_value' => variable_get('ddns_' . $provider . '_hostname',''),
+      '#default_value' => variable_get('ddns_' . $provider . '_hostname', ''),
     );
   };
 
@@ -57,7 +57,7 @@ function ddns_settings_form($form, &$form_state) {
     '#type' => 'fieldset',
     '#title' => t('Settings'),
   );
-  $form['ddns_settings']['interval'] = array(
+  $form['ddns_settings']['ddns_interval'] = array(
     '#type' => 'textfield',
     '#title' => t('Service Update Interval'),
     '#description' => t('Interval (in minutes) that services will be updated.
