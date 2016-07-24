@@ -6,8 +6,6 @@
  * @see ddns_menu()
  */
 function ddns_settings_form($form, &$form_state) {
-  module_load_include('inc','ddns','ddns.services');
-
   $form['ddns_description'] = array(
     '#markup' => t('The current IP address of the server is <b>@address</b>.', array(
         '@address' => ddns_current_ip(),
@@ -19,7 +17,7 @@ function ddns_settings_form($form, &$form_state) {
     '#title' => t('Available Services'),
   );
 
-  foreach (ddns_services() as $provider => $url) {
+  foreach(ddns_services() as $provider => $url) {
     $form['ddns_services'][$provider . '_enabled'] = array(
       '#type' => 'checkbox',
       '#title' => $provider,
@@ -54,6 +52,21 @@ function ddns_settings_form($form, &$form_state) {
       '#default_value' => variable_get('ddns_' . $provider . '_hostname',''),
     );
   };
+
+  $form['ddns_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Settings'),
+  );
+  $form['ddns_settings']['interval'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Service Update Interval'),
+    '#description' => t('Interval (in minutes) that services will be updated.
+      This number should be left as high as possible. Some service providers
+      will blacklist an account if it is updated too often.'),
+    '#default_value' => variable_get('ddns_interval', 60),
+    '#size' => 4,
+    '#maxlength' => 4,
+  );
 
   // Create a submit button and handle variable setting
   return system_settings_form($form);

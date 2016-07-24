@@ -7,6 +7,8 @@
  *
  */
 
+module_load_include('inc','ddns','ddns.services');
+
 /**
  * Implements hook_help().
  *
@@ -86,9 +88,45 @@ function ddns_menu() {
 }
 
 /**
- * Function to obtain external IP address from ipify.org service
+ * Function to obtain external IP address from ipify.org service.
  */
 function ddns_current_ip() {
   $ip = file_get_contents('https://api.ipify.org');
   return $ip;
+}
+
+/**
+ * Function to generate an array containing all services ready to update.
+ */
+function ddns_generate_service_urls() {
+  $services = array();
+  $ip = ddns_current_ip();
+  foreach(ddns_services() as $provider => $url) {
+    if ('ddns_' . $provider . '_enabled' === 1) {
+      $username = variable_get('ddns_' . $provider . '_username','');
+      $password = variable_get('ddns_' . $provider . '_password','');
+      $hostname = variable_get('ddns_' . $provider . '_hostname','');
+
+      $url = str_replace('[USERNAME]', $username, $url);
+      $url = str_replace('[PASSWORD]', $password, $url);
+      $url = str_replace('[DOMAIN]', $hostname, $url);
+      $url = str_replace('[IP]', $ip, $url);
+
+      $services[] = $url;
+    };
+  };
+  dsm($services);
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Runs the update process for enabled DDNS services.
+ */
+function ddns_cron() {
+  $interval = variable_get('ddns_interval', 60) * 60;
+  if (time() >= variable_get('ddns_nextrun', 0)) {
+    // TODO: Create code to execute curl update on urls
+  };
+  variable_set('ddns_nextrun', time() + $interval);
 }
