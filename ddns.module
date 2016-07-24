@@ -84,3 +84,11 @@ function ddns_menu() {
 
   return $items;
 }
+
+/**
+ * Function to obtain external IP address from ipify.org service
+ */
+function ddns_current_ip() {
+  $ip = file_get_contents('https://api.ipify.org');
+  return $ip;
+}
