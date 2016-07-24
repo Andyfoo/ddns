@@ -2,6 +2,9 @@
 
 /**
  * Available Dynamic DNS services
+ *
+ * Most services taken from work by the OpenWRT project
+ * https://github.com/openwrt/packages/blob/master/net/ddns-scripts/files/services
  */
 
 function ddns_services() {
