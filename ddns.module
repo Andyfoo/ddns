@@ -92,6 +92,9 @@ function ddns_menu() {
  */
 function ddns_current_ip() {
   $ip = file_get_contents('https://api.ipify.org');
+  if ($ip === FALSE) {
+    $ip = 'UNKNOWN';
+  };
   return $ip;
 }
 
