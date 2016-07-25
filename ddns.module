@@ -105,10 +105,11 @@ function ddns_generate_service_urls() {
   $services = array();
   $ip = ddns_current_ip();
   foreach(ddns_services() as $provider => $url) {
-    if ('ddns_' . $provider . '_enabled' === 1) {
-      $username = variable_get('ddns_' . $provider . '_username','');
-      $password = variable_get('ddns_' . $provider . '_password','');
-      $hostname = variable_get('ddns_' . $provider . '_hostname','');
+    $pu = str_replace('.', '_', $provider);
+    if (variable_get('ddns_' . $pu . '_enabled') === 1) {
+      $username = variable_get('ddns_' . $pu . '_username','');
+      $password = variable_get('ddns_' . $pu . '_password','');
+      $hostname = variable_get('ddns_' . $pu . '_hostname','');
 
       $url = str_replace('[USERNAME]', $username, $url);
       $url = str_replace('[PASSWORD]', $password, $url);
@@ -118,7 +119,7 @@ function ddns_generate_service_urls() {
       $services[] = $url;
     };
   };
-  dsm($services);
+  return $services;
 }
 
 /**
