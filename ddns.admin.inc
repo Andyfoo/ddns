@@ -34,24 +34,30 @@ function ddns_settings_form($form, &$form_state) {
         )
       ),
     );
-    $form['ddns_services']['ddns_' . $pu . '_settings']['ddns_' . $pu . '_username'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Username'),
-      '#description' => t('The username for the service.'),
-      '#default_value' => variable_get('ddns_' . $pu . '_username', ''),
-    );
-    $form['ddns_services']['ddns_' . $pu . '_settings']['ddns_' . $pu . '_password'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Password'),
-      '#description' => t('The password for the service.'),
-      '#default_value' => variable_get('ddns_' . $pu . '_password', ''),
-    );
-    $form['ddns_services']['ddns_' . $pu . '_settings']['ddns_' . $pu . '_hostname'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Hostname'),
-      '#description' => t('The hostname(s) for the service.'),
-      '#default_value' => variable_get('ddns_' . $pu . '_hostname', ''),
-    );
+    if (strpos($url, '[USERNAME]') !== FALSE) {
+      $form['ddns_services']['ddns_' . $pu . '_settings']['ddns_' . $pu . '_username'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Username'),
+        '#description' => t('The username for the service.'),
+        '#default_value' => variable_get('ddns_' . $pu . '_username', ''),
+      );
+    };
+    if (strpos($url, '[PASSWORD]') !== FALSE) {
+      $form['ddns_services']['ddns_' . $pu . '_settings']['ddns_' . $pu . '_password'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Password'),
+        '#description' => t('The password for the service.'),
+        '#default_value' => variable_get('ddns_' . $pu . '_password', ''),
+      );
+    };
+    if (strpos($url, '[DOMAIN]') !== FALSE) {
+      $form['ddns_services']['ddns_' . $pu . '_settings']['ddns_' . $pu . '_hostname'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Hostname'),
+        '#description' => t('The hostname(s) for the service.'),
+        '#default_value' => variable_get('ddns_' . $pu . '_hostname', ''),
+      );
+    };
   };
 
   $form['ddns_settings'] = array(
