@@ -128,11 +128,12 @@ function ddns_generate_service_urls() {
  * Runs the update process for enabled DDNS services.
  */
 function ddns_cron() {
-  $interval = variable_get('ddns_interval', 60) * 60;
   if (time() >= variable_get('ddns_nextrun', 0)) {
+    $interval = variable_get('ddns_interval', 60) * 60;
+    $ua = variable_get('ddns_ua', 'Drupal DDNS - https://www.drupal.org/project/ddns');
     foreach (ddns_generate_service_urls() as $provider => $url) {
       $curl_handle = curl_init();
-      curl_setopt($curl_handle, CURLOPT_USERAGENT, 'Drupal DDNS - https://www.drupal.org/project/ddns');
+      curl_setopt($curl_handle, CURLOPT_USERAGENT, $ua);
       //curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, FALSE);
       //curl_setopt($curl_handle, CURLOPT_SSL_VERIFYHOST, 2);
       curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);

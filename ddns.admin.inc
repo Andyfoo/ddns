@@ -68,6 +68,15 @@ function ddns_settings_form($form, &$form_state) {
     '#size' => 4,
     '#maxlength' => 4,
   );
+  $form['ddns_settings']['ddns_ua'] = array(
+    '#type' => 'textfield',
+    '#title' => t('User-Agent'),
+    '#description' => t('The user-agent sent to providers on an update request.'),
+    '#default_value' => variable_get('ddns_ua',
+      'Drupal DDNS - https://www.drupal.org/project/ddns'),
+    '#size' => 80,
+    '#maxlength' => 255,
+  );
 
   // Create a submit button and handle variable setting
   return system_settings_form($form);
