@@ -17,5 +17,13 @@ function ddns_enable() {
  * Runs during uninstall, cleaning up old variables
  */
 function ddns_uninstall() {
+  $variables = db_select('variable', 'v')
+    ->fields('v')
+    ->condition('name', db_like('ddns_') . '%', 'LIKE')
+    ->execute()
+    ->fetchCol();
 
+  foreach ($variables as $variable) {
+    variable_del($variable);
+  };
 }
