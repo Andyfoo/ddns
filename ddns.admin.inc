@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * @file
+ *
+ * Creates the administration menu for DDNS
+ *
+ */
+
+/**
  * Page callback: ddns settings
  *
  * @see ddns_menu()
@@ -17,13 +24,18 @@ function ddns_settings_form($form, &$form_state) {
     '#title' => t('Available Services'),
   );
 
-  foreach(ddns_services() as $provider => $url) {
+  // Build a form item for each one of our providers
+  foreach (ddns_services() as $provider => $url) {
+    // Replace periods with underscores
+    // The underscores cause havoc with form IDs
     $pu = str_replace('.', '_', $provider);
+    // A checkbox with the name of the provider
     $form['ddns_services']['ddns_' . $pu . '_enabled'] = array(
       '#type' => 'checkbox',
-      '#title' => $provider,
+      '#title' => check_plain($provider),
       '#default_value' => variable_get('ddns_' . $pu . '_enabled', 0),
     );
+    // A fieldset that only displays if the checkbox is active
     $form['ddns_services']['ddns_' . $pu . '_settings'] = array(
       '#type' => 'fieldset',
       '#states' => array(
@@ -34,7 +46,9 @@ function ddns_settings_form($form, &$form_state) {
         )
       ),
     );
+    // Check if the URL needs a username
     if (strpos($url, '[USERNAME]') !== FALSE) {
+      // A field for the username
       $form['ddns_services']['ddns_' . $pu . '_settings']['ddns_' . $pu . '_username'] = array(
         '#type' => 'textfield',
         '#title' => t('Username'),
@@ -42,7 +56,9 @@ function ddns_settings_form($form, &$form_state) {
         '#default_value' => variable_get('ddns_' . $pu . '_username', ''),
       );
     };
+    // Check if the URL needs a password
     if (strpos($url, '[PASSWORD]') !== FALSE) {
+      // A field for the password, plaintext
       $form['ddns_services']['ddns_' . $pu . '_settings']['ddns_' . $pu . '_password'] = array(
         '#type' => 'textfield',
         '#title' => t('Password'),
@@ -50,7 +66,9 @@ function ddns_settings_form($form, &$form_state) {
         '#default_value' => variable_get('ddns_' . $pu . '_password', ''),
       );
     };
+    // Check if the URL needs a host/domain
     if (strpos($url, '[DOMAIN]') !== FALSE) {
+      // A field for the host/domain
       $form['ddns_services']['ddns_' . $pu . '_settings']['ddns_' . $pu . '_hostname'] = array(
         '#type' => 'textfield',
         '#title' => t('Hostname'),
@@ -64,6 +82,7 @@ function ddns_settings_form($form, &$form_state) {
     '#type' => 'fieldset',
     '#title' => t('Settings'),
   );
+  // A field for update interval, max of 9999 seconds
   $form['ddns_settings']['ddns_interval'] = array(
     '#type' => 'textfield',
     '#title' => t('Service Update Interval'),
@@ -74,6 +93,7 @@ function ddns_settings_form($form, &$form_state) {
     '#size' => 4,
     '#maxlength' => 4,
   );
+  // A field for the connection user-agent
   $form['ddns_settings']['ddns_ua'] = array(
     '#type' => 'textfield',
     '#title' => t('User-Agent'),

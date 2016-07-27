@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * @file
+ *
+ * Install/Uninstall functionality
+ *
+ */
+
+/**
  * Implements hook_enable().
  *
  * Runs after the module is enabled, letting the user know where to go
@@ -17,12 +24,14 @@ function ddns_enable() {
  * Runs during uninstall, cleaning up old variables
  */
 function ddns_uninstall() {
+  // Find all the variables that start with ddns
   $variables = db_select('variable', 'v')
     ->fields('v')
     ->condition('name', db_like('ddns_') . '%', 'LIKE')
     ->execute()
     ->fetchCol();
 
+  // Delete all the variables that start with ddns
   foreach ($variables as $variable) {
     variable_del($variable);
   };

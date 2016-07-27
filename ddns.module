@@ -56,6 +56,11 @@ function ddns_help($path, $arg) {
   }
 }
 
+/**
+ * Implements hook_permission().
+ *
+ * Generates permissions for administration.
+ */
 function ddns_permission() {
   return array(
     'ddns admin' => array(
@@ -91,7 +96,10 @@ function ddns_menu() {
  * Function to obtain external IP address from ipify.org service.
  */
 function ddns_current_ip() {
+  // file_get_contents can sometimes be slow
+  // TODO: investigate a cURL based approach instead
   $ip = file_get_contents('https://api.ipify.org');
+  // file_get_contents returns FALSE if it's unable to reach ipify
   if ($ip === FALSE) {
     $ip = 'UNKNOWN';
   };
@@ -105,17 +113,23 @@ function ddns_generate_service_urls() {
   $services = array();
   $ip = ddns_current_ip();
   foreach (ddns_services() as $provider => $url) {
+    // The periods were replaced with underscores on the form so
+    // we need to reference them the same way again.
     $pu = str_replace('.', '_', $provider);
+    // Only generate a URL if the service is enabled
     if (variable_get('ddns_' . $pu . '_enabled') === 1) {
+      // Prepare all the values
       $username = variable_get('ddns_' . $pu . '_username', '');
       $password = variable_get('ddns_' . $pu . '_password', '');
       $hostname = variable_get('ddns_' . $pu . '_hostname', '');
 
+      // Try to replace username, password, domain, and IP
       $url = str_replace('[USERNAME]', $username, $url);
       $url = str_replace('[PASSWORD]', $password, $url);
       $url = str_replace('[DOMAIN]', $hostname, $url);
       $url = str_replace('[IP]', $ip, $url);
 
+      // Add everything to an array to return
       $services[$provider] = $url;
     };
   };
@@ -128,9 +142,10 @@ function ddns_generate_service_urls() {
  * Runs the update process for enabled DDNS services.
  */
 function ddns_cron() {
+  // Check to see if we're ready to run
   if (time() >= variable_get('ddns_nextrun', 0)) {
-    $interval = variable_get('ddns_interval', 60) * 60;
     $ua = variable_get('ddns_ua', 'Drupal DDNS - https://www.drupal.org/project/ddns');
+    // Use cURL for each of the URLs generated
     foreach (ddns_generate_service_urls() as $provider => $url) {
       $curl_handle = curl_init();
       curl_setopt($curl_handle, CURLOPT_USERAGENT, $ua);
@@ -139,17 +154,24 @@ function ddns_cron() {
       curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
       curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
       curl_setopt($curl_handle, CURLOPT_URL, $url);
+      // Update should be done, but we'll save the output to make sure
       $buffer = curl_exec($curl_handle);
+      // If cURL had an error, inform the user
       if (curl_errno($curl_handle)) {
-        echo 'Curl error: ' . curl_error($curl_handle);
+        drupal_set_message(t('DDNS had an issue with cURL: @errno', array(
+          '@errno' => curl_error($curl_handle),
+        )), 'error');
       }
+      // We assume cURL worked, but need to make sure the service did
       else {
+        // If the buffer is empty, we can assume the service is not working
         if (empty($buffer)) {
           //TODO: Add watchdog message for unsuccessful connection
           drupal_set_message(t('The provider, @provider, was unable to be reached.', array(
             '@provider' => $provider,
           )), 'error');
         }
+        // The buffer has content, we assume the service is working
         else {
           //TODO: Add watchdog message for successful update
         }
@@ -157,5 +179,8 @@ function ddns_cron() {
       curl_close($curl_handle);
     };
   };
+  // Get the interval set in minutes, default of 60
+  $interval = variable_get('ddns_interval', 60) * 60;
+  // Re-set the ddns_nextrun variable (by default an hour from now)
   variable_set('ddns_nextrun', time() + $interval);
 }

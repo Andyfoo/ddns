@@ -1,10 +1,21 @@
 <?php
 
 /**
+ * @file
+ *
+ * Handles returning an array with all the available services
+ *
+ */
+
+/**
  * Available Dynamic DNS services
  *
  * Most services taken from work by the OpenWRT project
  * https://github.com/openwrt/packages/blob/master/net/ddns-scripts/files/services
+ *
+ * Services should be in the form of $name => $url
+ *
+ * Custom service support should be implemented in this file
  */
 
 function ddns_services() {
