@@ -1,6 +1,6 @@
 -- SUMMARY --
 
-The DDNS module provides a built in way to manage your DDNS providers. Out of
+The DDNS module provides a built in way to manage your DDNS (DynamicDNS) providers. Out of
 the box, the module supports dozens of popular DDNS services. The module
 utilizes the Drupal cron process to automatically update your providers but
 will only run as often as configured to do so.
