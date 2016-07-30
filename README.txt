@@ -12,7 +12,7 @@ will only run as often as configured to do so.
 -- INSTALLATION --
 
 The module can be installed and activated through normal conventions, but it is
-recommended that a cron service from the service side is utilized to kick off
+recommended that a cron service from the server side is utilized to kick off
 Drupal's cron job on a regular basis. The built in Drupal cron may not be
 utilized as often as needed, so setting up a cron job on the server to execute
 "drush cron" periodically ensures you're always updated.
