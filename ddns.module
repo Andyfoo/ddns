@@ -158,22 +158,26 @@ function ddns_cron() {
       $buffer = curl_exec($curl_handle);
       // If cURL had an error, inform the user
       if (curl_errno($curl_handle)) {
-        drupal_set_message(t('DDNS had an issue with cURL: @errno', array(
+        $message = t('DDNS had an issue with cURL: @errno', array(
           '@errno' => curl_error($curl_handle),
-        )), 'error');
+        ));
+        watchdog('ddns', $message, NULL, WATCHDOG_ERROR);
       }
       // We assume cURL worked, but need to make sure the service did
       else {
         // If the buffer is empty, we can assume the service is not working
         if (empty($buffer)) {
-          //TODO: Add watchdog message for unsuccessful connection
-          drupal_set_message(t('The provider, @provider, was unable to be reached.', array(
+          $message = t('The provider, @provider, was unable to be reached.', array(
             '@provider' => $provider,
-          )), 'error');
+          ));
+          watchdog('ddns', $message, NULL, WATCHDOG_WARNING);
         }
         // The buffer has content, we assume the service is working
         else {
-          //TODO: Add watchdog message for successful update
+          $message = t('The provider, @provider, was updated.', array(
+            '@provider' => $provider,
+          ));
+          watchdog('ddns', $message, NULL, WATCHDOG_INFO);
         }
       };
       curl_close($curl_handle);
