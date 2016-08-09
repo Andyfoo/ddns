@@ -85,10 +85,10 @@ function ddns_settings_form($form, &$form_state) {
   // A field for update interval, max of 9999 seconds
   $form['ddns_settings']['ddns_interval'] = array(
     '#type' => 'textfield',
-    '#title' => t('Service Update Interval'),
-    '#description' => t('Interval (in minutes) that services will be updated.
-      This number should be left as high as possible. Some service providers
-      will blacklist an account if it is updated too often.'),
+    '#title' => t('Minimum Service Update Interval'),
+    '#description' => t('Minimum interval (in minutes) that services will be
+      updated. This number should be left as high as possible. Some service
+      providers will blacklist an account if it is updated too often.'),
     '#default_value' => variable_get('ddns_interval', 60),
     '#size' => 4,
     '#maxlength' => 4,

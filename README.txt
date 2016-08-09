@@ -39,9 +39,13 @@ utilized as often as needed, so setting up a cron job on the server to execute
 
 * Some services may not contain all of these fields
 
-* The Service Update Interval window should be left as high as possible. Some
-providers will blacklist your account. It is recommended to leave this at 60
-minutes to ensure your account is not blacklisted.
+* The Minimum Service Update Interval window should be left as high as possible.
+Some providers will blacklist your account. It is recommended to leave this at
+60 minutes to ensure your account is not blacklisted. Note that this number sets
+a minimum time frame that services will be updated. If your cron is executed
+less often than the time specified here, then your services will only be updated
+when the cron is run. If your cron is run more often than the minimum time frame,
+the services will only update once the specified amount of minutes has elapsed.
 
 * Some providers may require a custom user-agent to be specified. If you know
 you need this, fill it in, otherwise leave it default.
