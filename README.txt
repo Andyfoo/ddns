@@ -5,6 +5,14 @@ the box, the module supports dozens of popular DDNS services. The module
 utilizes the Drupal cron process to automatically update your providers but
 will only run as often as configured to do so.
 
+You can find the project page here:
+
+https://www.drupal.org/sandbox/mills00013/2771683
+
+Submit issues (or requests for more new providers) at the issue page:
+
+https://www.drupal.org/project/issues/2771683
+
 -- REQUIREMENTS --
 
 * PHP must be compiled with cURL support
