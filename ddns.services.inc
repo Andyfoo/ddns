@@ -24,7 +24,7 @@ function ddns_services() {
     'zoneedit.com' => 'http://[USERNAME]:[PASSWORD]@dynamic.zoneedit.com/auth/dynamic.html?host=[DOMAIN]&dnsto=[IP]',
     'changeip.com' => 'http://[USERNAME]:[PASSWORD]@nic.changeip.com/nic/update?u=[USERNAME]&p=[PASSWORD]&cmd=update&hostname=[DOMAIN]&ip=[IP]',
     'free.editdns.net' => 'http://dyndns-free.editdns.net/api/dynLinux.php?p=[PASSWORD]&r=[DOMAIN]',
-    'freedns.afraid.org' => 'http://freedns.afraid.org/dynamic/update.php?[PASSWORD]&address=[IP]',
+    'freedns.afraid.org' => 'http://[USERNAME]:[PASSWORD]@freedns.afraid.org/nic/update?hostname=[DOMAIN]&myip=[IP]',
     'dnsmax.com' => 'http://update.dnsmax.com/update/?username=[USERNAME]&password=[PASSWORD]&resellerid=1&clientname=drupalddns&clientversion=7.x&protocolversion=2.0&updatehostname=[DOMAIN]&ip=[IP]',
     'thatip.com' => 'http://update.dnsmax.com/update/?username=[USERNAME]&password=[PASSWORD]&resellerid=2&clientname=drupalddns&clientversion=7.x&protocolversion=2.0&updatehostname=[DOMAIN]&ip=[IP]',
     'he.net' => 'http://[DOMAIN]:[PASSWORD]@dyn.dns.he.net/nic/update?hostname=[DOMAIN]&myip=[IP]',
